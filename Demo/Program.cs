@@ -31,7 +31,7 @@ namespace Demo
                         throw new SystemException($"Something got wrong retrieving device {i}. Do you have a nvidia card?");
                     }
 
-                    var deviceName = NvGpu.NvmlDeviceGetName(device);
+                    var deviceName = NvGpu.NvmlDeviceGetName(device,100);
                     Console.WriteLine($"The device name from index {i} is {deviceName}");
                     var info = NvGpu.NvmlDeviceGetPciInfoV3(device);
                     var busId = GetStringFromSByteArray(info.busId);

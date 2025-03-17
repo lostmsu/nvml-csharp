@@ -130,6 +130,9 @@ namespace Nvidia.Nvml
         internal static extern NvmlReturn NvmlDeviceGetPciInfo_v3(IntPtr device, out NvmlPciInfo pci);
         [DllImport(NVML_SHARED_LIBRARY_STRING, CharSet = CharSet.Ansi, EntryPoint = "nvmlDeviceSetComputeMode")]
         internal static extern NvmlReturn NvmlDeviceSetComputeMode(IntPtr device, NvmlComputeMode mode);
+
+        [DllImport(NVML_SHARED_LIBRARY_STRING, EntryPoint = "nvmlDeviceGetUtilizationRates")]
+        internal static extern NvmlReturn NvmlDeviceGetUtilizationRates(IntPtr device, out NvmlUtilization utilization);
     }
 
     public class NvGpu
@@ -245,6 +248,12 @@ namespace Nvidia.Nvml
             }
 
             return (new List<NvmlProcessInfo>(buffer), count);
+        }
+        public static NvmlUtilization NvmlDeviceGetUtilizationRates(IntPtr device )
+        {
+            NvmlUtilization nvmlUtilization = new NvmlUtilization();
+            Api.NvmlDeviceGetUtilizationRates(device, out nvmlUtilization);
+            return nvmlUtilization;
         }
 
         public static string NvmlSystemGetProcessName(uint pid, uint length)
@@ -363,6 +372,11 @@ namespace Nvidia.Nvml
             }
 
             return device;
+        }
+        public static NvmlEnableState NvmlDeviceGetDisplayMode(IntPtr device){
+            NvmlReturn res;
+            res = Api.NvmlDeviceGetDisplayMode(device, out NvmlEnableState displayMode);
+            return displayMode;
         }
 
         public static uint NvmlDeviceGetTemperature(IntPtr device, NvmlTemperatureSensor sensorType)
